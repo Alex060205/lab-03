@@ -38,8 +38,8 @@ fun CityListScreen(
     var newProvinceName by remember { mutableStateOf("") }
     var showAddCityFields by remember { mutableStateOf(false) }
     var selectedCity by remember { mutableStateOf<City?>(null) }
-    var editedCityName by remember { mutableStateOf("") }
-    var editedProvinceName by remember { mutableStateOf("") }
+    var editCityName by remember { mutableStateOf("") }
+    var editProvinceName by remember { mutableStateOf("") }
 
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -48,6 +48,7 @@ fun CityListScreen(
             horizontalArrangement = Arrangement.End
         ) {
         }
+        // button for adding a city
         FloatingActionButton(
             modifier = Modifier.padding(16.dp),
             onClick = {
@@ -57,20 +58,21 @@ fun CityListScreen(
             Text("+")
         }
 
-
+    // fields to add a city
     if (showAddCityFields) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+            // city input
             OutlinedTextField(
                 value = newCityName,
                 onValueChange = { newCityName = it },
                 label = { Text("City") },
                 modifier = Modifier.weight(1f)
             )
-
+            // province input
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedTextField(
                 value = newProvinceName,
@@ -78,7 +80,7 @@ fun CityListScreen(
                 label = { Text("Province") },
                 modifier = Modifier.weight(1f)
             )
-
+            // add new city
             Spacer(modifier = Modifier.width(8.dp))
             Button(
                 modifier = Modifier.padding(vertical = 12.dp),
@@ -102,6 +104,7 @@ fun CityListScreen(
 
         }
     }
+        // same, show fields to update a selected city
         if (selectedCity != null) {
             Row(
                 modifier = Modifier
@@ -109,8 +112,8 @@ fun CityListScreen(
                     .padding(16.dp)
             ) {
                 OutlinedTextField(
-                    value = editedCityName,
-                    onValueChange = { editedCityName = it },
+                    value = editCityName,
+                    onValueChange = { editCityName = it },
                     label = { Text("Updated City") },
                     modifier = Modifier.weight(1f)
                 )
@@ -118,8 +121,8 @@ fun CityListScreen(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 OutlinedTextField(
-                    value = editedProvinceName,
-                    onValueChange = { editedProvinceName = it },
+                    value = editProvinceName,
+                    onValueChange = { editProvinceName = it },
                     label = { Text("Updated Province") },
                     modifier = Modifier.weight(1f)
                 )
@@ -134,8 +137,8 @@ fun CityListScreen(
                             onUpdateCity(
                                 city,
                                 City(
-                                    name = editedCityName,
-                                    province = editedProvinceName
+                                    name = editCityName,
+                                    province = editProvinceName
                                 )
                             )
 
@@ -147,13 +150,14 @@ fun CityListScreen(
                 }
             }
         }
+        // show the list of cities
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(cities) { index, city ->
                 CityRow(city = city,
                     onClick = {
                         selectedCity = city
-                        editedCityName = city.name
-                        editedProvinceName = city.province
+                        editCityName = city.name
+                        editProvinceName = city.province
                     }
                         )
                 if (index < cities.lastIndex) {
@@ -169,6 +173,7 @@ fun CityRow(city: City,
             onClick: () -> Unit
 
 ) {
+    // make city row clickable
     Row(
         modifier = Modifier
             .fillMaxWidth()
